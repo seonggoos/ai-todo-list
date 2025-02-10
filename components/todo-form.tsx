@@ -67,18 +67,26 @@ export function TodoForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const hasPermission = await requestNotificationPermission();
 
-    const todo = {
+    const newTodo = {
+      id: crypto.randomUUID(),
       title: values.title,
       completed: false,
+      createdAt: new Date().toISOString(),
       dueDate: values.dueDate?.toISOString(),
       priority: values.priority,
       notifyAt: values.notifyAt?.toISOString(),
     };
 
-    addTodo(todo);
+    addTodo({
+      title: values.title,
+      completed: false,
+      dueDate: values.dueDate?.toISOString(),
+      priority: values.priority,
+      notifyAt: values.notifyAt?.toISOString(),
+    });
 
-    if (hasPermission && todo.notifyAt) {
-      scheduleNotification(todo);
+    if (hasPermission && newTodo.notifyAt) {
+      scheduleNotification(newTodo);
     }
 
     form.reset();

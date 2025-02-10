@@ -1,3 +1,5 @@
+import { Todo } from "@/types/todo";
+
 export async function requestNotificationPermission() {
   if (!("Notification" in window)) {
     return false;
